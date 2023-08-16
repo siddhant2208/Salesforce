@@ -1,0 +1,33 @@
+public class AccountContactCreationQueueable implements Queueable {
+    List<GroupMember> groupMembers;
+
+ 
+
+    public AccountContactCreationQueueable(List<GroupMember> members) {
+        this.groupMembers = members;
+    }
+
+ 
+
+    public void execute(QueueableContext context) {
+        List<Account> accountsToInsert = new List<Account>();
+        List<Contact> contactsToInsert = new List<Contact>();
+
+ 
+
+        for (GroupMember member : groupMembers) {
+            Account newAccount = new Account(Name = 'Account for ' + member.UserOrGroupId);
+            accountsToInsert.add(newAccount);
+
+ 
+
+            Contact newContact = new Contact(FirstName = 'Contact', LastName = 'for ' + member.UserOrGroupId, AccountId = newAccount.Id);
+            contactsToInsert.add(newContact);
+        }
+
+ 
+
+        insert accountsToInsert;
+        insert contactsToInsert;
+    }
+}

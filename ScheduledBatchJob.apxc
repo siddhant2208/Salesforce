@@ -1,0 +1,6 @@
+global class ScheduledBatchJob implements Schedulable {
+    global void execute(SchedulableContext sc) {
+        ConvertLeadsToAccountsBatch batchJob = new ConvertLeadsToAccountsBatch();
+        Database.executeBatch(batchJob);
+    }
+}
